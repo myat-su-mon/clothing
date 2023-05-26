@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn-primary {
+        @apply bg-[#1C2E3D] p-3 text-white hover:border-[#1C2E3D] hover:text-black
+    }
+    .btn-outline {
+        @apply border-[#1C2E3D] border-2 p-2 me-2 my-5
+    }
+    .active-btn {
+        @apply bg-[#1C2E3D] text-white
+    }
+    .btn-no-outline {
+        @apply p-2 my-5 text-2xl text-[#1C2E3D]
+    }
+}
