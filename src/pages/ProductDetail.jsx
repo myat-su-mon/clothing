@@ -1,53 +1,74 @@
 import React, { useState } from 'react'
 import Layout from '../components/Layout';
+import { useParams } from 'react-router-dom';
+import { products, sizes } from '../data/data';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../redux/cartReducer';
 
 const ProductDetail = () => {
+  const dispatch = useDispatch();
+  const [qty, setQty] = useState(1);
+  const [activeSize, setActiveSize] = useState("");
 
-  const [quantity, setQuantity] = useState(1);
-  const images = [
-    "https://images.pexels.com/photos/2112651/pexels-photo-2112651.jpeg?auto=compress&cs=tinysrgb&w=600",
-    "https://images.pexels.com/photos/15625985/pexels-photo-15625985/free-photo-of-children-clothes-on-hangers-in-shop.jpeg?auto=compress&cs=tinysrgb&w=600",
-  ];
+  const detailId = useParams().detailId;
+  const detailProduct = products?.find((product) => product.id == detailId);
+
+  const handleClick = (e) => {
+    setSize(e.currentTarget.innerText);
+    e.target.classList.add("active-btn")
+  }
+
   return (
     <Layout>
       <div className="flex align-middle gap-10">
         <div className="img-container w-[50%] mb-5">
-          <img
-            src={images[0]}
-            // onClick={ e => setSelectedImg(0)}
-            className="shadow-xl"
-          />
+          <img src={detailProduct.image} />
         </div>
         <div className="w-[50%]">
           <h4 className="text-3xl tracking-wide leading-relaxed my-5">
-            MEN WEAR SPORT SHIRT
+            {detailProduct.title}
           </h4>
-          <h4 className="text-2xl my-5">KS 53500</h4>
+          <h4 className="text-2xl my-5">KS {detailProduct.price}</h4>
           <br />
           <span>Available Sizes</span>
           <br />
-          <div className="btn-group flex">
-            <button className="btn-outline">S</button>
-            <button className="btn-outline">M</button>
-            <button className="btn-outline active-btn">L</button>
-            <button className="btn-outline">XL</button>
-            <button className="btn-outline">XXL</button>
+          <div className="size btn-group flex">
+            {sizes?.map((size) => (
+              <button
+                onClick={() => setActiveSize(size.size)}
+                key={size.id}
+                className={`btn-outline ${
+                  size.size == activeSize && "active-btn"
+                }`}
+              >
+                {size.size}
+              </button>
+            ))}
           </div>
-          <div className="add-to-cart mb-5">
+          <div className="qty mb-5">
             <button
               className="btn-no-outline"
-              onClick={() => setQuantity((prev) => prev===1 ? 1 : prev - 1)}
+              onClick={() => setQty((prev) => (prev === 1 ? 1 : prev - 1))}
             >
               -
             </button>
-            <span className="me-2">{quantity}</span>
+            <span className="me-2">{qty}</span>
             <button
               className="btn-no-outline"
-              onClick={() => setQuantity((prev) => prev + 1)}
+              onClick={() => setQty((prev) => prev + 1)}
             >
               +
             </button>
-            <button className="btn-primary">ADD TO CART</button>
+            <button
+              className="btn-primary"
+              onClick={() =>
+                dispatch(
+                  addToCart({ ...detailProduct, qty: qty, size: activeSize })
+                )
+              }
+            >
+              ADD TO CART
+            </button>
           </div>
           <span>DESCRIPTION</span>
           <p className="mt-2">

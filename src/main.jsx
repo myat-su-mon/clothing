@@ -3,16 +3,15 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import Routing from "./Routing";
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
-import { ApiProvider } from "@reduxjs/toolkit/dist/query/react";
-import { productsApi } from "./redux/productsApi";
+import { persistor, store } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <ApiProvider api={productsApi}>
-      <Routing>
+    <Routing>
+      <PersistGate loading={"loading"} persistor={persistor}>
         <App />
-      </Routing>
-    </ApiProvider>
+      </PersistGate>
+    </Routing>
   </Provider>
 );

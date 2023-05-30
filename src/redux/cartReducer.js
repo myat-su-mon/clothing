@@ -1,32 +1,56 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
+
+const cart = Cookies.get("cart");
 
 const initialState = {
-  products: []
+  cart: cart ? [...JSON.parse(cart)] : [],
 };
 
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart: (state,action) => {
-        const item = state.products.find(item=>item.id === action.payload.id)
+    addToCart: (state, { payload }) => {
+      const item = state.cart.find((item) => item.id === payload.id);
 
-        if(item){
-            item.quantity += action.payload.quantity;
-        } else {
-            state.push(action.payload);
+      if (item) {
+        if (item.size != payload.size) {
+          item.size = [...item.size, payload.size];
         }
-    }, 
-    removeItem: (state, action) => {
-        state.products =  state.products.filter(item=> item.id != action.payload.id);
+        item.qty += payload.qty;
+      } else {
+        state.cart.push(payload);
+      }
+      // Cookies.set("cart", JSON.stringify(state.cart));
     },
-    resetCart: (state, action) => {
-        state.products = [];
-    }
+    removeFromCart: (state, { payload }) => {
+      state.cart = state.cart.filter((item) => item.id != payload);
+      // Cookies.set("cart", JSON.stringify(state.cart));
+    },
+    resetCart: (state) => {
+      state.cart = [];
+      // Cookies.remove("cart");
+    },
+    increaseQty: (state, { payload }) => {
+      state.cart = state.cart.map((item) => {
+        if (item.id === payload) {
+          item.qty += 1;
+        }
+        return item;
+      });
+    },
+    decreaseQty: (state, { payload }) => {
+      state.cart = state.cart.map((item) => {
+        if (item.id === payload && item.qty > 1) {
+          item.qty -= 1;
+        }
+        return item;
+      });
+    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { addToCart, removeItem, resetCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, resetCart, increaseQty, decreaseQty } = cartSlice.actions;
 
 export default cartSlice.reducer;

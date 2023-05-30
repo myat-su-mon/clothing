@@ -1,11 +1,9 @@
 import React from "react";
 import ProductCard from "../components/ProductCard";
 import Layout from "../components/Layout";
-import { useGetAllProductsQuery } from "../redux/productsApi";
+import { products } from "../data/data";
 
 const ProductList = () => {
-  const { data } = useGetAllProductsQuery();
-  const products = data?.products;
   
   return (
     <Layout>

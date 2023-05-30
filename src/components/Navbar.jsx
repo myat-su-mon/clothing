@@ -7,8 +7,7 @@ import { Badge } from "@mui/material";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const cart = useSelector((state) => state.products);
-   console.log(cart)
+  const cart = useSelector((state) => state.cart.cart);
 
   return (
     <nav className="container mx-auto px-4 py-4">
@@ -18,8 +17,8 @@ const Navbar = () => {
         </div>
         <div className="center flex gap-8">
           <Link to="/">Home</Link>
-          <a href="#newArrivals">New Arrivals</a>
-          <a href="#products">Products</a>
+          <a href="/#newArrivals">New Arrivals</a>
+          <a href="/#products">Products</a>
         </div>
         <div className="right flex align-middle gap-4">
           <div className="cart relative" onClick={() => setOpen(!open)}>
