@@ -1,8 +1,24 @@
 import React from "react";
 import Layout from "../components/Layout";
-import Footer from "../components/Footer";
+import loadStripe from 'stripe';
 
 const Checkout = () => {
+  // const stripePromise = loadStripe(
+  //   "pk_test_51NDIihD9ZcyBiExiURBtPntXsGItgvpqZ4ONqtEmxDzpMJAOM8LuzVYcN3v4OSQMLERTRNPz5gShsAvzhjiqNcpm001iiiAiHi"
+  // ); 
+  // console.log(stripePromise)
+  // const handlePayment = async () => {
+  //   try {
+  //     const stripe = await stripePromise;
+  //     const res = await makeRequest.post("/orders", {products,});
+
+  //     await stripe.redirectToCheckout({
+  //       sessionId: res.data.stripeSession.id,
+  //     });
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
   return (
     <Layout>
       <h4 className="tracking-wide text-3xl font-semibold text-center">
@@ -166,7 +182,7 @@ const Checkout = () => {
               className="flex justify-end
             "
             >
-              <button className="btn-primary">PLACE ORDER</button>
+              <button onClick={handlePayment} className="btn-primary">PLACE ORDER</button>
             </div>
           </div>
         </div>

@@ -11,7 +11,11 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import cartReducer from "./cartReducer";
+import Stripe from "stripe";
 
+const stripe = Stripe(import.meta.env.STRIPE_KEY);
+
+console.log(stripe)
 
 const persistConfig = {
   key: "root",
